@@ -177,4 +177,4 @@ def plotTrajectory3D(fps, filename, translations, quaternions, pW_corners):
 
 camera_translations = np.array([-R.T @ t for R, t in zip(R_list, t_list)])
 camera_quaternions = np.array([rotation_to_quaternion(R.T) for R in R_list])
-plotTrajectory3D(10, "Trajectory.mp4", camera_translations, camera_quaternions, pW_corners)
+plotTrajectory3D(15, "Trajectory.mp4", camera_translations, camera_quaternions, pW_corners)

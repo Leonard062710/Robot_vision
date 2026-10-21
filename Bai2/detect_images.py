@@ -66,8 +66,8 @@ for l in range(p.shape[0]):
                       (0, 100, 240), -1)
     cv2.rectangle(img1, (x - 5, y - 1), (x + 5, y + 1),
                       (0, 100, 240), -1)
-# print(k,'\n')
-# print(p)
-# cv2.imshow("Image", img1)
+print(k,'\n')
+print(p)
+cv2.imshow("Image", img1)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
