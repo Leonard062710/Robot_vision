@@ -63,4 +63,4 @@ if __name__ == "__main__":
     ax.set_zticks(np.arange(0, -41, -10))
 
     ax.set_box_aspect((45, 30, 46))
-    plt.show()
+    # plt.show()
