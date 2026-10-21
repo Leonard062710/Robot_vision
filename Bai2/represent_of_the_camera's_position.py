@@ -4,49 +4,64 @@ import cv2
 import matplotlib.pyplot as plt
 
 
-def drawCamera(ax,pos,dir,length_scl = 1,head_size = 0.2) :
-  dir_norm = np.array(dir) / np.linalg.norm(dir)
-  arrow_dir = dir_norm * length_scl
-  ax.scatter(
-      pos[0],
-      pos[1],
-      pos[2],
-      color="blue",
-      s=100,
-      label="Camera Position",
-  )
-  ax.quiver(
-      pos[0],
-      pos[1],
-      pos[2],
-      arrow_dir[0],
-      arrow_dir[1],
-      arrow_dir[2],
-      color="red",
-      linewidth=2,
-      arrow_length_ratio=head_size,
-  )
+def drawCamera(ax, pos, R, length_scl, head_size):
+    pos = np.asarray(pos, dtype=float)
+    R = np.asarray(R, dtype=float)
 
-fig = plt.figure(figsize=(5, 5))
-ax = fig.add_subplot(projection="3d")
+    colors = ("red", "green", "blue")
+    labels = ("X", "Y", "Z")
+    offset = 0.45
+    for i in range(3):
+        direction = R[:, i]
+        direction = direction / np.linalg.norm(direction)
+        arrow = direction * length_scl
+        start = pos + offset * direction
+        ax.quiver(
+            *start, *arrow,
+            color=colors[i],
+            linewidth = 1.75,
+            arrow_length_ratio = head_size,
+            label = labels[i],
+        )
 
-pos, _ = cv2.Rodrigues(T[:3, :3])
+fig = plt.figure(figsize=(10, 10))
+ax = fig.add_subplot(projection = "3d" )
 
-dir = T[:3, 3]
+pos = T[:3, 3] * 100
+R = T[:3, :3]
 
-drawCamera(ax, pos, dir, 2.0, 0.3)
+drawCamera(ax, pos, R, 10.0, 0.135)
 
-# Cấu hình hiển thị thêm cho đồ thị sinh động
-ax.set_xlabel("Trục X")
-ax.set_ylabel("Trục Y")
-ax.set_zlabel("Trục Z")
-ax.set_title("Mô phỏng vị trí và hướng nhìn của Camera trong không gian 3D")
-ax.legend()
+world_corners = np.asarray(pW_corners, dtype=float) * 100
+planes = (
+    ([0, 1, 3, 2, 0], "tab:red"),
+    ([4, 5, 7, 6, 4], "tab:purple"),
+    ([8, 10, 11, 9, 8], "tab:green"),
+)
+for corner_indices, color in planes:
+    plane_corners = world_corners[corner_indices]
+    ax.plot(
+        plane_corners[:, 0],
+        plane_corners[:, 1],
+  plane_corners[:, 2],
+        color=color,
+        marker="o",
+        markerfacecolor="red",
+        markeredgecolor="steelblue",
+        linewidth=2,
+    )
 
-# Thiết lập giới hạn khung nhìn đồ thị
-ax.set_xlim([0, 5])
-ax.set_ylim([0, 5])
-ax.set_zlim([0, 5])
+ax.set_xlabel("X")
+ax.set_ylabel("Y")
+ax.set_zlabel("Z")
 
+ax.set_xlim([20, -25])
+ax.set_ylim([0, 30])
+ax.set_zlim([0, -46])
 
+ax.set_xticks(np.arange(20, -21, -10))
+ax.set_yticks(np.arange(0, 26, 5))
+ax.set_zticks(np.arange(0, -41, -10))
+
+ax.set_box_aspect((45, 30, 46))
 plt.show()
