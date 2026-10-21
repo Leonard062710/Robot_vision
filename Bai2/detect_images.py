@@ -39,6 +39,12 @@ t_calib = alpha * M[:,3]
 M_calib = np.zeros((3,4))
 M_calib[:3,:3] = R_calib
 M_calib[:3,3] = t_calib
+#Khởi tạo ma trận T
+T = np.zeros((4, 4))
+T[:3, :3] = M_calib[:3, :3]
+T[:3, 3] = M_calib[:3, 3]
+T[3, 3] = 1
+T = np.linalg.inv(T)
 
 World = np.zeros((4,12))
 World[:3,] = pW_corners.T
