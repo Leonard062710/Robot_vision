@@ -35,6 +35,7 @@ R_calib = np.dot(U_R, VT_R)
 R_numerator = np.linalg.norm(R_calib)
 R_denominator = np.linalg.norm(R)
 alpha = R_numerator / R_denominator
+
 t_calib = alpha * M[:,3]
 M_calib = np.zeros((3,4))
 M_calib[:3,:3] = R_calib
@@ -64,8 +65,8 @@ for l in range(p.shape[0]):
                       (0, 100, 240), -1)
     cv2.rectangle(img1, (x - 5, y - 1), (x + 5, y + 1),
                       (0, 100, 240), -1)
-# print(k,'\n')
-# print(p)
-# cv2.imshow("Image", img1)
+print(k,'\n')
+print(p)
+cv2.imshow("Image", img1)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
