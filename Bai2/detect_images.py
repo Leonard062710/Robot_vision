@@ -7,6 +7,7 @@ pW_corners = np.float32(cdn/100)
 
 img1 =  cv2.imread("./img_0001.jpg")
 detect_corn = np.loadtxt("./detected_corners.txt")
+
 j = detect_corn[0]
 K_inv = np.linalg.inv(K)
 num_points = len(pW_corners)
@@ -65,8 +66,8 @@ for l in range(p.shape[0]):
                       (0, 100, 240), -1)
     cv2.rectangle(img1, (x - 5, y - 1), (x + 5, y + 1),
                       (0, 100, 240), -1)
-print(k,'\n')
-print(p)
-cv2.imshow("Image", img1)
+# print(k,'\n')
+# print(p)
+# cv2.imshow("Image", img1)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
