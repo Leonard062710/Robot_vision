@@ -35,9 +35,9 @@ for j in detect_corn:
     correction = np.eye(3)
     correction[2, 2] = np.linalg.det(U_R @ VT_R)
     R_calib = U_R @ correction @ VT_R
-    R_numerator = np.linalg.norm(R_calib)
-    R_denominator = np.linalg.norm(R)
-    alpha = R_numerator / R_denominator
+    R_num = np.linalg.norm(R_calib)
+    R_de = np.linalg.norm(R)
+    alpha = R_num / R_de
 
     t_calib = alpha * M[:, 3]
     M_calib = np.zeros((3, 4))
@@ -85,7 +85,6 @@ def rotation_to_quaternion(R):
         y = (r12 + r21) / S
         z = 0.25 * S
     return np.array([x, y, z, w])
-
 
 quaternion_list = np.array([rotation_to_quaternion(R) for R in R_list])
 
