@@ -53,7 +53,6 @@ for k in range(len(points)):
 R_list = np.stack(R_list)
 t_list = np.stack(t_list)
 
-
 def rotation_to_quaternion(R):
     r00, r01, r02 = R[0]
     r10, r11, r12 = R[1]
@@ -89,7 +88,6 @@ def rotation_to_quaternion(R):
 
 
 quaternion_list = np.array([rotation_to_quaternion(R) for R in R_list])
-# print(quaternion_list)
 
 def quaternion_to_rotation(q):
     x, y, z, w = np.asarray(q, dtype=float)
@@ -110,15 +108,6 @@ def plotTrajectory3D(fps, filename, translations, quaternions, pW_corners):
     quaternions = np.asarray(quaternions, dtype=float)
     pW_corners = np.asarray(pW_corners, dtype=float)
 
-    if fps <= 0 or translations.ndim != 2 or translations.shape[1] != 3:
-        raise ValueError("fps must be positive and translations must have shape (N, 3)")
-    if quaternions.shape != (len(translations), 4):
-        raise ValueError("quaternions must have shape (N, 4) in x, y, z, w order")
-    if pW_corners.ndim != 2 or pW_corners.shape[1] != 3:
-        raise ValueError("pW_corners must have shape (M, 3)")
-    if len(translations) == 0 or len(pW_corners) == 0:
-        raise ValueError("translations and pW_corners must not be empty")
-
     all_points = np.vstack((translations, pW_corners))
     minimum = all_points.min(axis=0)
     maximum = all_points.max(axis=0)
@@ -135,9 +124,6 @@ def plotTrajectory3D(fps, filename, translations, quaternions, pW_corners):
     writer = cv2.VideoWriter(
         str(filename), cv2.VideoWriter_fourcc(*"mp4v"), float(fps), (width, height)
     )
-    if not writer.isOpened():
-        plt.close(figure)
-        raise RuntimeError(f"Cannot create video: {filename}")
 
     plt.show(block=False)
     try:
@@ -177,4 +163,4 @@ def plotTrajectory3D(fps, filename, translations, quaternions, pW_corners):
 
 camera_translations = np.array([-R.T @ t for R, t in zip(R_list, t_list)])
 camera_quaternions = np.array([rotation_to_quaternion(R.T) for R in R_list])
-plotTrajectory3D(15, "Trajectory.mp4", camera_translations, camera_quaternions, pW_corners)
+plotTrajectory3D(30, "Trajectory.mp4", camera_translations, camera_quaternions, pW_corners)
